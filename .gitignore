@@ -73,3 +73,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.svn/format
+*.db
+.svn/pristine/ff/ff748ad82ab51fe650fd4093e53dd77d261ba391.svn-base
+*.svn-base
+.svn/wc.db-journal

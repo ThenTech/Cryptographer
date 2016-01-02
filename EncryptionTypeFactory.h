@@ -22,36 +22,13 @@ namespace Cryptography {
 				return i > 0 && i <= (int) EncryptionType::MAX;
 			}
 
-			static void displayTypeNames() {
-				for (size_t t = 0; t < (int) EncryptionType::MAX; t++)
-				   cout << "\t" << (t + 1) << "\t" << EncryptionTypeNames[t] << endl;
-			}
+			static void displayTypeNames();
 
-			static EncryptionType getTypeFromInput(size_t in) {
-				if (!typeChoiceInBounds(in))
-					throw Exceptions::OutOfBoundsException(in);
+			static EncryptionType getTypeFromInput(size_t in);
 
-				return EncryptionType(in);
-			}
+			static IEncryptionType* newAlgorithm(EncryptionType t);
 
-			static IEncryptionType* newAlgorithm(EncryptionType t) {
-				switch (t) {
-					case EncryptionType::ASCIIScramble:
-						return new EncryptionType_ASCIIScramble;
-					case EncryptionType::StrShift:
-						return new EncryptionType_StrShift;
-					case EncryptionType::SimpleHash:
-						return new EncryptionType_SimpleHash;
-					case EncryptionType::SimpleReversibleHash:
-						return new EncryptionType_SimpleReversibleHash;
-					default:
-						return nullptr;
-				}
-			}
-
-			static IEncryptionType* newAlgorithm(size_t in) {
-			    return newAlgorithm(getTypeFromInput(in));
-			}
+			static IEncryptionType* newAlgorithm(size_t in);
 	};
 
 }

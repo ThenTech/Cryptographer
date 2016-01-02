@@ -20,47 +20,47 @@ namespace Exceptions {
 	    virtual ~Exception() _GLIBCXX_USE_NOEXCEPT {}
 
 	    virtual const string getMessage() const _GLIBCXX_USE_NOEXCEPT {
-		return _msg;
+			return _msg;
 	    }
     };
 
     class OutOfBoundsException : public Exception  {
 	public:
 	    OutOfBoundsException(int idx)
-		: Exception("Index " + to_string(idx) + " was out of bound.") {}
+			: Exception("Index " + to_string(idx) + " was out of bound.") {}
 
 	    const string getMessage() const _GLIBCXX_USE_NOEXCEPT {
-		return "OutOfBoundsException: " + Exception::getMessage();
+			return "OutOfBoundsException: " + Exception::getMessage();
 	    }
 	};
 
 	class NullPointerException : public Exception  {
 	public:
 		NullPointerException(string msg)
-		: Exception("Reference " + msg + " not set to an object.") {}
+			: Exception("Reference " + msg + " not set to an object.") {}
 
 		const string getMessage() const _GLIBCXX_USE_NOEXCEPT {
-		return "NullPointerException: " + Exception::getMessage();
+			return "NullPointerException: " + Exception::getMessage();
 		}
 	};
 
 	class FileReadException : public Exception  {
 	public:
 		FileReadException()
-		: Exception("Cannot read from file.") {}
+			: Exception("Cannot read from file.") {}
 
 		const string getMessage() const _GLIBCXX_USE_NOEXCEPT {
-		return "FileReadException: " + Exception::getMessage();
+			return "FileReadException: " + Exception::getMessage();
 		}
 	};
 
 	class FileWriteException : public Exception  {
 	public:
 		FileWriteException()
-		: Exception("Cannot write to file.") {}
+			: Exception("Cannot write to file.") {}
 
 		const string getMessage() const _GLIBCXX_USE_NOEXCEPT {
-		return "FileWriteException: " + Exception::getMessage();
+			return "FileWriteException: " + Exception::getMessage();
 		}
 	};
 }

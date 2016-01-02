@@ -1,3 +1,5 @@
+#define	NDEBUG			// comment to enable debugging
+
 #include "DataFile.h"
 #include "Exceptions.h"
 
@@ -29,7 +31,16 @@ string* DataFile::getStringFromFile(fstream *file) {
 }
 
 DataFile* DataFile::getFileFromString(string str) {
-	ofstream file("output.txt");
+	// Temporary ------------------------------------------
+	string name = "output";
+#ifdef NDEBUG
+	cout << "Enter a name for the output file: ";
+	cin.clear(); cin.sync();
+	getline(cin, name);
+#endif
+	// Temporary ------------------------------------------
+
+	ofstream file(name + ".txt"); // output.txt
 
 	try {
 		file << str;
@@ -38,7 +49,7 @@ DataFile* DataFile::getFileFromString(string str) {
 		throw Exceptions::FileWriteException();
 	}
 
-	return new DataFile(new fstream("output.txt"));
+	return new DataFile(new fstream(name + ".txt")); // output.txt
 }
 
 DataString *DataFile::getDataString() {

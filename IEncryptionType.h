@@ -15,27 +15,24 @@ namespace Cryptography {
 		public:
 			virtual ~IEncryptionType() {}
 
-			virtual Data<string>* encrypt(Data<string>*, longInt)
-				{ return nullptr; }
+			virtual Data<string>* encrypt(Data<string>*, longInt);
 
-			virtual Data<fstream>* encrypt(Data<fstream> *source, longInt key){
-				return DataFile::getFileFromString(
-							this->encrypt(((DataFile* )source)->getDataString(), key)
-							->toString());
+			virtual Data<fstream>* encrypt(Data<fstream> *source, longInt key);
+
+			virtual Data<string>* decrypt(Data<string> *encrypted, longInt key);
+
+			virtual Data<fstream>* decrypt(Data<fstream> *encrypted, longInt key);
+
+			virtual string toString();
+
+			// Call with object itself gives type of data
+			friend ostream& operator<<(ostream &os, IEncryptionType& ie) {
+				return os << ie.toString();
 			}
 
-			virtual Data<string>* decrypt(Data<string> *encrypted, longInt key) {
-				return this->encrypt(encrypted, -key);
-			}
-
-			virtual Data<fstream>* decrypt(Data<fstream> *encrypted, longInt key)  {
-				return DataFile::getFileFromString(
-							this->decrypt(((DataFile* )encrypted)->getDataString(), key)
-							->toString());
-			}
-
-			virtual string toString(){
-				return type2name(*this);
+			// Call with pointer to object gives type of data
+			friend ostream& operator<<(ostream &os, IEncryptionType *ie) {
+				return os << *ie;
 			}
 	};
 

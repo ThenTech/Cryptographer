@@ -23,6 +23,16 @@ namespace Cryptography {
 			return new DataString(en);
 		}
 
+		Data<string>* decrypt(Data<string> *encrypted, longInt key) {
+			(void) key;
+			cerr << "WARNING: A hash cannot be decrypted." << endl;
+			string *en = alloc::allocVar<string>();
+
+			*en = encrypted->toString();
+
+			return new DataString(en);
+		}
+
 		string toString() {
 			return "IEncryptionType:EncryptionType_SimpleHash";
 		}

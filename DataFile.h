@@ -12,7 +12,7 @@ namespace Cryptography {
 		private:
 			DataString *stringData;
 		public:
-			DataFile(fstream *data);
+			DataFile(fstream *data = nullptr);
 			~DataFile();
 
 			static string* getStringFromFile(fstream *file);
@@ -21,6 +21,16 @@ namespace Cryptography {
 			DataString *getDataString();
 			string toString();
 			string toStringType();
+
+			// Call with object itself gives internal data
+			friend ostream& operator<<(ostream &os, DataFile& d) {
+				return os << d.toString();
+			}
+
+			// Call with pointer to object gives type of data
+			friend ostream& operator<<(ostream &os, DataFile *d) {
+				return os << d->toStringType();
+			}
 	};
 
 }

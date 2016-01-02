@@ -17,7 +17,7 @@ namespace Cryptography {
 			srand(abs(key));
 
 			for (char16_t c : source->toString())
-				*en += char16_t(c + ((rand() % 163 - 83)) * (key < 0 ? -1 : 1));
+				*en += char16_t(c + ((rand() % 163 - 83)) * (key < 0 ? -1 : key == 0 ? 0 : 1));
 
 			return new DataString(en);
 		}

@@ -8,11 +8,12 @@
 ████████			=> with template and toString/Number functions (hash?)	   █████████
 ████████																	   █████████
 ████████████████████████████████████████████████████████████████████████████████████████*/
+#define	NDEBUG			// comment to enable debugging (also in DataFile.cpp)
+
 #include <iostream>
 #include "display.h"
-#include "Cryptography.h"
+#include "Cryptographer.h"
 
-#define	NDEBUG			// uncomment to disable debugging and assertion
 #include "UnitTest.h"
 
 using namespace std;
@@ -26,18 +27,44 @@ int main() {
 #else
 	string test = "";
 	longInt key = 0;
+
+	typedef enum {STRING = 1, FILE = 2} dataChoice;
+	int dChoice = 0;
 	int algoChoice = 0;
-	Cryptographer<string> c(nullptr, nullptr, key);
+	Cryptographer<string>	*cs = nullptr;
+	Cryptographer<fstream>	*cf = nullptr;
 
 	while(1) {
-		try {
+		try {			
 			/*██████████████████████████████████████████████████████████████████████████████████████
-			████ Enter and set encryption string ███████████████████████████████████████████████████
+			████ Enter and set encryption string or file ███████████████████████████████████████████
 			████████████████████████████████████████████████████████████████████████████████████████*/
-			cout << "Enter a string to encrypt : ";
-			cin.clear(); cin.sync();
-			getline(cin, test);
-			c.setSource(new DataString(&test));
+
+			cout << "Encrypt data from:"			<< endl << endl;
+			cout << "\t" << 1 << "\t" << "String"	<< endl;
+			cout << "\t" << 2 << "\t" << "File"		<< endl << endl;
+
+			do {
+				cout << "Enter the number of the method you want to use: ";
+				cin.clear(); cin.sync();
+			} while (!(cin >> dChoice) || dChoice < STRING || dChoice > FILE);
+
+			switch (dChoice) {
+				case STRING:
+					cout << "Enter a string to encrypt : ";
+					cin.clear(); cin.sync();
+					getline(cin, test);
+					cs = new Cryptographer<string>(new DataString(&test), nullptr, key);
+					break;
+				case FILE:
+					cout << "Enter the path to the file to encrypt: ";
+					cin.clear(); cin.sync();
+					getline(cin, test);
+					cf = new Cryptographer<fstream>(new DataFile(new fstream(test)), nullptr, key);
+					break;
+				default:
+					throw Exceptions::Exception("ERROR: No valid entry.");
+			}
 
 			/*██████████████████████████████████████████████████████████████████████████████████████
 			████ Enter and set encryption key ██████████████████████████████████████████████████████
@@ -46,7 +73,7 @@ int main() {
 				cout << "Enter a key for encryption: ";
 				cin.clear(); cin.sync();
 			} while (!(cin >> key) || !Cryptography::keyInBounds(key));
-			c.setKey(key);
+			dChoice == STRING ? cs->setKey(key) : cf->setKey(key);
 
 			/*██████████████████████████████████████████████████████████████████████████████████████
 			████ Display and select encryption algorithm ███████████████████████████████████████████
@@ -60,25 +87,20 @@ int main() {
 				cin.clear(); cin.sync();
 			} while (!(cin >> algoChoice) || !EncryptionAlgoFactory::typeChoiceInBounds(algoChoice));
 
-			c.setAlgorithm(EncryptionAlgoFactory::newAlgorithm(algoChoice));
+			dChoice == STRING ? cs->setAlgorithm(EncryptionAlgoFactory::newAlgorithm(algoChoice))
+							  : cf->setAlgorithm(EncryptionAlgoFactory::newAlgorithm(algoChoice));
 			cout << endl;
 
 			/*██████████████████████████████████████████████████████████████████████████████████████
 			████ Display info and start en- & decryption ███████████████████████████████████████████
 			████████████████████████████████████████████████████████████████████████████████████████*/
-			cout <<  "Source: " << c.getSource()->toStringType()	<< " =" << endl << endl
-								<< c.getSource()->toString()		<< endl << endl;
-
-			cout <<  "  Algo: " << c.getAlgorithm()->toString()		<< endl << endl;
-
-			cout <<  "  Encr: " << c.getEncrypted()->toStringType() << " =" << endl << endl
-								<< c.getEncrypted()->toString()		<< endl << endl;
-
-			cout <<  "  Decr: " << c.getDecrypted()->toStringType() << " =" << endl << endl
-								<< c.getDecrypted()->toString()		<< endl << endl;
+			dChoice == STRING ? cout << cs : cout << cf;
 
 			system("PAUSE");
 			system("CLS");
+
+			delete cs;
+			delete cf;
 		} catch (Exceptions::Exception const &e) {
 			err(e.getMessage());
 		} catch (...) {

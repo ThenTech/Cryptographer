@@ -3,11 +3,11 @@
 
 //#define NDEBUG	// uncomment to disable debugging and assertion
 
-#ifndef NDEBUG	// ifndef NDEBUG
+#ifndef NDEBUG		// ifndef NDEBUG
 
 #include <cassert>			// Debug assertion
 #include "display.h"		// Logging
-#include "Cryptography.h"
+#include "Cryptographer.h"
 
 using namespace Cryptography;
 

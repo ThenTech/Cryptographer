@@ -2,6 +2,38 @@
 
 using namespace Cryptography;
 
+/*
+ *	Only method to be overrided in reversible encryption.
+ */
+Data<string>* IEncryptionType::encrypt(Data<string>*, longInt) {
+	return nullptr;
+}
+
+Data<fstream>* IEncryptionType::encrypt(Data<fstream> *source, longInt key){
+	return DataFile::getFileFromString(
+				this->encrypt(((DataFile* )source)->getDataString(), key)
+				->toString());
+}
+
+Data<string>* IEncryptionType::decrypt(Data<string> *encrypted, longInt key) {
+	return this->encrypt(encrypted, -key);
+}
+
+Data<fstream>* IEncryptionType::decrypt(Data<fstream> *encrypted, longInt key)  {
+	return DataFile::getFileFromString(
+				this->decrypt(((DataFile* )encrypted)->getDataString(), key)
+				->toString());
+}
+
+string IEncryptionType::toString(){
+	return type2name(*this);
+}
+
+
+
+/*
+ *	Template garbage.
+ */
 //// template class fix
 //template class IEncryptionType<string>;
 //template class IEncryptionType<fstream>;

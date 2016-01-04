@@ -160,5 +160,4 @@ void log(std::string s) {
 	restoreConsole(saved_attributes_screen);
 }
 
-
 #endif

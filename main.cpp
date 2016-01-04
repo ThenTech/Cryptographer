@@ -14,7 +14,9 @@
 #include "display.h"
 #include "Cryptographer.h"
 
+#ifndef NDEBUG
 #include "UnitTest.h"
+#endif
 
 using namespace std;
 using namespace Cryptography;

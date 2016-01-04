@@ -64,19 +64,13 @@ longInt Cryptographer<T>::getKey() {
 }
 
 template <class T>
-void Cryptographer<T>::encrypt() {
-	if (this->getAlgorithm() == nullptr)
-		throw Exceptions::NullPointerException("getAlgorithm");
-	if (this->getSource() == nullptr)
-		throw Exceptions::NullPointerException("getSource");
-
-	// threaded?
-	this->encrypted = this->getAlgorithm()->encrypt(this->getSource(), this->getKey());
-}
-
-template <class T>
 Data<T> *Cryptographer<T>::getDecrypted() {
 	if (this->decrypted == nullptr) {
+		if (this->getAlgorithm() == nullptr)
+			throw Exceptions::NullPointerException("getAlgorithm");
+		if (this->getSource() == nullptr)
+			throw Exceptions::NullPointerException("getSource");
+
 		this->decrypted = this->getAlgorithm()->decrypt(this->getEncrypted() == nullptr ?
 								this->getSource() : this->getEncrypted(), this->getKey());
 	}
@@ -86,8 +80,15 @@ Data<T> *Cryptographer<T>::getDecrypted() {
 template <class T>
 Data<T> *Cryptographer<T>::getEncrypted() {
 	if (this->encrypted == nullptr) {
-		this->encrypt();
+		if (this->getAlgorithm() == nullptr)
+			throw Exceptions::NullPointerException("getAlgorithm");
+		if (this->getSource() == nullptr)
+			throw Exceptions::NullPointerException("getSource");
+
+		// threaded?
+		this->encrypted = this->getAlgorithm()->encrypt(this->getSource(), this->getKey());
 	}
+
 	return this->encrypted;
 }
 

@@ -27,8 +27,6 @@ namespace Cryptography {
 			Data<T> *encrypted			= nullptr;
 			IEncryptionType *algorithm	= nullptr;
 
-			void encrypt();
-
 		public:
 			Cryptographer(Data<T> *source = nullptr, IEncryptionType *algorithm = nullptr, longInt key = 0);
 			~Cryptographer();
@@ -54,6 +52,7 @@ namespace Cryptography {
 									<< *c.getEncrypted()	<< endl << endl;
 				os <<  "  Decr: "	<<	c.getDecrypted()	<< " =" << endl << endl
 									<< *c.getDecrypted()	<< endl << endl;
+
 				return os;
 			}
 
